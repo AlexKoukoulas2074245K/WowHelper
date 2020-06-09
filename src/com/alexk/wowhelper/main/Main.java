@@ -1,4 +1,4 @@
-package com.alexk.main;
+package com.alexk.wowhelper.main;
 
 public class Main {
 
