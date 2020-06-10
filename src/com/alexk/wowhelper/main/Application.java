@@ -1,8 +1,6 @@
 package com.alexk.wowhelper.main;
 
-import com.alexk.wowhelper.model.ClassType;
-import com.alexk.wowhelper.parsing.SpellParser;
-import com.alexk.wowhelper.view.BackgroundView;
+import com.alexk.wowhelper.controller.MainApplicationController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +13,7 @@ public class Application extends JFrame implements ComponentListener
     public static final float ASPECT_RATIO          = DEFAULT_DIMENSION.width/(float)DEFAULT_DIMENSION.height;
 
     private static final String WINDOW_TITLE = "Wow Helper";
+    private MainApplicationController mMainApplicationController;
 
     public Application()
     {
@@ -22,13 +21,15 @@ public class Application extends JFrame implements ComponentListener
 
         addComponentListener(this);
 
+        mMainApplicationController = new MainApplicationController();
+
         setPreferredSize(DEFAULT_DIMENSION);
-        setContentPane(new BackgroundView());
+        setContentPane(mMainApplicationController.getView());
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
-        new SpellParser(ClassType.PALADIN).parse();
+        mMainApplicationController.update();
     }
 
     @Override

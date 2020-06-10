@@ -5,30 +5,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class BackgroundView extends JPanel
+public class BackgroundView extends JPanel implements IView
 {
     private static final String BACKGROUND_IMAGE_PATH = "/background.png";
 
     private Image mBackgroundImage;
-    private LoadingBarView mLoadingBarView;
 
     public BackgroundView()
     {
         super(new BorderLayout());
         loadImages();
-        loadSubViews();
     }
 
-    float getLoadingProgress()
+    @Override
+    public void addSubView(JPanel subView)
     {
-        return mLoadingBarView.getLoadingProgress();
+        add(subView);
     }
-
-    void setLoadingProgress(final float loadingProgress)
-    {
-        mLoadingBarView.setLoadingProgress(loadingProgress);
-    }
-
 
     @Override
     public void paintComponent(final Graphics g)
@@ -48,11 +41,5 @@ public class BackgroundView extends JPanel
         {
             e.printStackTrace();
         }
-    }
-
-    private void loadSubViews()
-    {
-        mLoadingBarView = new LoadingBarView();
-        add(new LoadingBarView());
     }
 }

@@ -1,11 +1,15 @@
 package com.alexk.wowhelper.view;
 
+import com.alexk.wowhelper.events.EventSystem;
+import com.alexk.wowhelper.events.ILoadingProgressUpdateEventListener;
+import com.alexk.wowhelper.events.LoadingProgressUpdateEvent;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class LoadingBarView extends JPanel
+public class LoadingProgressView extends JPanel implements ILoadingProgressUpdateEventListener, IView
 {
     private static final String LOADING_BAR_IMAGE_PATH       = "/loading_bar.png";
     private static final String LOADING_BAR_BLOCK_IMAGE_PATH = "/loading_bar_block.png";
@@ -16,23 +20,29 @@ public class LoadingBarView extends JPanel
     private static final int DEFAULT_LOADING_BAR_BLOCK_MAX_WIDTH       = 1412;
 
     private Image mLoadingBarImage, mLoadingBarBlockImage;
-    private float mLoadingProgress;
+    private float mLoadingBarCompleteFraction;
 
-    public LoadingBarView()
+    public LoadingProgressView()
     {
         loadImages();
         setTransparency();
-        mLoadingProgress = 0.7f;
+
+        mLoadingBarCompleteFraction = 0.0f;
+
+        EventSystem.subscribeToEvent(LoadingProgressUpdateEvent.class, this);
     }
 
-    public float getLoadingProgress()
+    @Override
+    public void OnLoadingProgressUpdateEvent(float newLoadingProgress)
     {
-        return mLoadingProgress;
+        mLoadingBarCompleteFraction = newLoadingProgress;
+        repaint();
     }
 
-    public void setLoadingProgress(final float loadingProgress)
+    @Override
+    public void addSubView(JPanel subView)
     {
-        mLoadingProgress = loadingProgress;
+        add(subView);
     }
 
     @Override
@@ -54,7 +64,7 @@ public class LoadingBarView extends JPanel
 
         float targetLoadingBarBlockX = (DEFAULT_LOADING_BAR_BLOCK_OFFSET.x * getWidth())/(float)DEFAULT_LOADING_BAR_DIMENSION.width;
         float targetLoadingBarBlockY = (DEFAULT_LOADING_BAR_BLOCK_OFFSET.y * loadingBarHeight)/(float)DEFAULT_LOADING_BAR_DIMENSION.height;
-        float targetBlockWidth = (1.0f - mLoadingProgress) * DEFAULT_LOADING_BAR_BLOCK_DIMENSION.width + (mLoadingProgress) * DEFAULT_LOADING_BAR_BLOCK_MAX_WIDTH;
+        float targetBlockWidth = (1.0f - mLoadingBarCompleteFraction) * DEFAULT_LOADING_BAR_BLOCK_DIMENSION.width + (mLoadingBarCompleteFraction) * DEFAULT_LOADING_BAR_BLOCK_MAX_WIDTH;
         float targetLoadingBarBlockWidth = (targetBlockWidth * getWidth())/(float)DEFAULT_LOADING_BAR_DIMENSION.width;
         float targetLoadingBarBlockHeight = (DEFAULT_LOADING_BAR_BLOCK_DIMENSION.height * loadingBarHeight)/(float)DEFAULT_LOADING_BAR_DIMENSION.height;
 
