@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class LoadingProgressView extends JPanel implements ILoadingProgressUpdateEventListener, IView
+public class LoadingProgressView extends JPanel implements ILoadingProgressUpdateEventListener
 {
     private static final String LOADING_BAR_IMAGE_PATH       = "/loading_bar.png";
     private static final String LOADING_BAR_BLOCK_IMAGE_PATH = "/loading_bar_block.png";
@@ -33,16 +33,10 @@ public class LoadingProgressView extends JPanel implements ILoadingProgressUpdat
     }
 
     @Override
-    public void OnLoadingProgressUpdateEvent(float newLoadingProgress)
+    public void onLoadingProgressUpdateEvent(float newLoadingProgress)
     {
         mLoadingBarCompleteFraction = newLoadingProgress;
         repaint();
-    }
-
-    @Override
-    public void addSubView(JPanel subView)
-    {
-        add(subView);
     }
 
     @Override
@@ -50,7 +44,7 @@ public class LoadingProgressView extends JPanel implements ILoadingProgressUpdat
     {
         super.paintComponent(g);
 
-        float loadingBarHeight = getHeight()/15;
+        float loadingBarHeight = getHeight()/15.0f;
         float loadingBarOffset = 1.5f * loadingBarHeight;
 
         g.drawImage(

@@ -35,11 +35,7 @@ public class SpellParser implements IHtmlParser
             htmlListViewActualJsonString = htmlListViewActualJsonString.replace("popularity", "\"popularity\"");
 
             JSONParser parser = new JSONParser();
-            JSONArray parsedJson = (JSONArray) parser.parse(htmlListViewActualJsonString);
-
-            System.out.println(parsedJson.size());
-
-            return parsedJson;
+            return (JSONArray) parser.parse(htmlListViewActualJsonString);
         }
         catch (ParseException e)
         {

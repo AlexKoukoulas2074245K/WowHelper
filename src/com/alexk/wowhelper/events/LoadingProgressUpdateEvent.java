@@ -12,6 +12,6 @@ public class LoadingProgressUpdateEvent implements IEvent<ILoadingProgressUpdate
     @Override
     public void notify(ILoadingProgressUpdateEventListener listener)
     {
-        listener.OnLoadingProgressUpdateEvent(mLoadingProgress);
+        listener.onLoadingProgressUpdateEvent(mLoadingProgress);
     }
 }

@@ -1,15 +1,14 @@
 package com.alexk.wowhelper.controller;
 
-import com.alexk.wowhelper.events.EventSystem;
-import com.alexk.wowhelper.events.ILoadingProgressUpdateEventListener;
-import com.alexk.wowhelper.events.LoadingProgressUpdateEvent;
+import com.alexk.wowhelper.events.*;
 import com.alexk.wowhelper.model.ApplicationState;
 import com.alexk.wowhelper.model.MainApplicationModel;
+import com.alexk.wowhelper.model.MainOptionType;
 import com.alexk.wowhelper.view.MainApplicationView;
 
 import javax.swing.*;
 
-public class MainApplicationController implements IController, ILoadingProgressUpdateEventListener
+public class MainApplicationController implements IController, ILoadingProgressUpdateEventListener, IMainOptionSelectedEventListener
 {
     private final MainApplicationView mMainApplicationView;
     private final MainApplicationModel mMainApplicationModel;
@@ -27,6 +26,7 @@ public class MainApplicationController implements IController, ILoadingProgressU
         mIsLoading = true;
 
         EventSystem.subscribeToEvent(LoadingProgressUpdateEvent.class, this);
+        EventSystem.subscribeToEvent(MainOptionSelectedEvent.class, this);
     }
 
     @Override
@@ -45,11 +45,17 @@ public class MainApplicationController implements IController, ILoadingProgressU
     }
 
     @Override
-    public void OnLoadingProgressUpdateEvent(float newLoadingProgress)
+    public void onLoadingProgressUpdateEvent(float newLoadingProgress)
     {
         if (newLoadingProgress > 0.99f)
         {
             mMainApplicationModel.setApplicationState(ApplicationState.MAIN_OPTIONS);
         }
+    }
+
+    @Override
+    public void onMainOptionSelectedEvent(MainOptionType mainOptionSelected)
+    {
+        mMainApplicationModel.setApplicationState(ApplicationState.IN_OPTION);
     }
 }

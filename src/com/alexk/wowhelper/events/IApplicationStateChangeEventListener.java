@@ -4,5 +4,5 @@ import com.alexk.wowhelper.model.ApplicationState;
 
 public interface IApplicationStateChangeEventListener
 {
-    void OnLoadingProgressUpdateEvent(final ApplicationState newApplicationState);
+    void onApplicationStateChangeEvent(final ApplicationState newApplicationState);
 }

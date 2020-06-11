@@ -14,6 +14,6 @@ public class ApplicationStateChangeEvent implements IEvent<IApplicationStateChan
     @Override
     public void notify(IApplicationStateChangeEventListener listener)
     {
-        listener.OnLoadingProgressUpdateEvent(mApplicationState);
+        listener.onApplicationStateChangeEvent(mApplicationState);
     }
 }

@@ -5,7 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class BackgroundView extends JPanel implements IView
+public class BackgroundView extends JPanel
 {
     private static final String BACKGROUND_IMAGE_PATH = "/background.png";
 
@@ -15,12 +15,6 @@ public class BackgroundView extends JPanel implements IView
     {
         super(new BorderLayout());
         loadImages();
-    }
-
-    @Override
-    public void addSubView(JPanel subView)
-    {
-        add(subView);
     }
 
     @Override

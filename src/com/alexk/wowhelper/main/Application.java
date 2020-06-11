@@ -19,6 +19,9 @@ public class Application extends JFrame implements ComponentListener
     {
         super(WINDOW_TITLE);
 
+        try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
+        catch (Exception e) { e.printStackTrace(); }
+
         addComponentListener(this);
 
         mMainApplicationController = new MainApplicationController();

@@ -1,7 +1,6 @@
 package com.alexk.wowhelper.controller;
 
 import com.alexk.wowhelper.view.BackgroundView;
-import com.alexk.wowhelper.view.IView;
 
 import javax.swing.*;
 
@@ -9,13 +8,15 @@ public class BackgroundViewController implements IController
 {
     private final BackgroundView mBackgroundView;
     private final LoadingProgressController mLoadingProgressController;
+    private final MainOptionsController mMainOptionsController;
 
-    public BackgroundViewController(final IView parentView)
+    public BackgroundViewController(final JPanel parentView)
     {
         mBackgroundView = new BackgroundView();
-        parentView.addSubView(mBackgroundView);
+        parentView.add(mBackgroundView);
 
         mLoadingProgressController = new LoadingProgressController(mBackgroundView);
+        mMainOptionsController = new MainOptionsController(mBackgroundView);
     }
 
     @Override
