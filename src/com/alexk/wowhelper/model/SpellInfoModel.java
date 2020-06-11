@@ -8,21 +8,6 @@ import java.util.Map;
 
 public class SpellInfoModel
 {
-    private class SpellInfo
-    {
-        private final int mTrainableAtLevel;
-        private final int mCost;
-
-        public SpellInfo(final int trainableAtLevel, final int cost)
-        {
-            mTrainableAtLevel = trainableAtLevel;
-            mCost = cost;
-        }
-
-        public int getTrainableAtLevel() { return mTrainableAtLevel; }
-        public int getCost() { return mCost; }
-    }
-
     private Map<String, SpellInfo> mSpellInfoMap;
 
     public SpellInfoModel()
@@ -32,13 +17,21 @@ public class SpellInfoModel
 
     public Object[] getAllSpellNames() { return mSpellInfoMap.keySet().toArray(); }
 
+    public SpellInfo getSpellInfo(final String spellName) { return mSpellInfoMap.get(spellName); }
+
     public void addSpellArray(final JSONArray spellArray)
     {
         for (Object entry: spellArray)
         {
             JSONObject spellEntry = (JSONObject)entry;
 
-            String spellName     = spellEntry.get("name") + " (" + spellEntry.get("rank") + ")";
+            String spellName = spellEntry.get("name").toString();
+
+            if (spellEntry.containsKey("rank") && !spellEntry.get("rank").toString().equals("null"))
+            {
+                spellName += " (" + spellEntry.get("rank") + ")";
+            }
+
             int trainableAtLevel = ((Long)(spellEntry.get("level"))).intValue();
             int cost             = 0;
 
