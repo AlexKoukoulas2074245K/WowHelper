@@ -17,9 +17,9 @@ public class MainOptionsController implements
         ILoadedSpellArrayEntryEventListener
 {
     private final JPanel mParentView;
-    private final MainOptionsView mMainOptionsView;
     private final SpellInfoModel mSpellInfoModel;
-    private final SpellInfoView mSpellInfoView;
+    private MainOptionsView mMainOptionsView;
+    private SpellInfoView mSpellInfoView;
 
     private MainOptionType mCurrentlySelectedMainOptionType;
 
@@ -53,27 +53,27 @@ public class MainOptionsController implements
     @Override
     public void onApplicationStateChangeEvent(ApplicationState newApplicationState)
     {
+        mParentView.removeAll();
+
         if (newApplicationState == ApplicationState.MAIN_OPTIONS)
         {
+            mMainOptionsView = new MainOptionsView();
             mParentView.add(mMainOptionsView);
-            mParentView.repaint();
         }
         else if (newApplicationState == ApplicationState.IN_OPTION)
         {
-            mMainOptionsView.setVisible(false);
-
             switch (mCurrentlySelectedMainOptionType)
             {
                 case SPELL_INFO:
                 {
+                    mSpellInfoView = new SpellInfoView(mSpellInfoModel);
                     mSpellInfoView.repopulateComponents();
                     mParentView.add(mSpellInfoView);
                 } break;
-
             }
-
-            mParentView.repaint();
         }
+
+        mParentView.getRootPane().revalidate();
     }
 
     @Override

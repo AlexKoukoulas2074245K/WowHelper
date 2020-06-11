@@ -2,9 +2,13 @@ package com.alexk.wowhelper.view;
 
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.alexk.wowhelper.events.EventSystem;
+import com.alexk.wowhelper.events.InOptionBackButtonPressedEvent;
 import com.alexk.wowhelper.model.MainOptionType;
 import com.alexk.wowhelper.model.SpellInfo;
 import com.alexk.wowhelper.model.SpellInfoModel;
+import com.alexk.wowhelper.util.CustomButtonWrapper;
+import com.alexk.wowhelper.util.ICustomButtonPressedListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,14 +17,14 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class SpellInfoView extends JPanel implements ActionListener
+public class SpellInfoView extends JPanel implements ActionListener, ICustomButtonPressedListener
 {
     private static final String INFO_BOX_IMAGE_PATH    = "/info_box.png";
     private static final String GOLD_ICON_IMAGE_PATH   = "/gold_icon.png";
     private static final String SILVER_ICON_IMAGE_PATH = "/silver_icon.png";
     private static final String COPPER_ICON_IMAGE_PATH = "/copper_icon.png";
 
-    private static final Dimension GRID_LAYOUT_DIMENSION = new Dimension(3, 11);
+    private static final Dimension GRID_LAYOUT_DIMENSION = new Dimension(4, 11);
     private final SpellInfoModel mSpellInfoModel;
     private Image mInfoBoxImage, mGoldIconImage, mSilverIconImage, mCopperIconImage;
 
@@ -51,7 +55,14 @@ public class SpellInfoView extends JPanel implements ActionListener
 
         for (int i = 0; i < GRID_LAYOUT_DIMENSION.height * GRID_LAYOUT_DIMENSION.width; ++i)
         {
-            if (i == 16)
+            if (i == 0)
+            {
+                add(new CustomButtonWrapper("back", this));
+                JPanel emptyPanel = new JPanel();
+                emptyPanel.setVisible(false);
+                add(emptyPanel);
+            }
+            if (i == 15)
             {
                 Object[] elements = mSpellInfoModel.getAllSpellNames();
                 Arrays.sort(elements);
@@ -59,7 +70,7 @@ public class SpellInfoView extends JPanel implements ActionListener
                 mSpellComboBox.addActionListener(this);
                 add(mSpellComboBox);
             }
-            else if (i == 19)
+            else if (i == 20)
             {
                 mSpellInfoPanel = new JPanel()
                 {
@@ -118,6 +129,12 @@ public class SpellInfoView extends JPanel implements ActionListener
         mSelectedSpellCost[1] = (spellInfo.getCost() % 10000)/100;
         mSelectedSpellCost[2] = spellInfo.getCost() % 100;
         repaint();
+    }
+
+    @Override
+    public void OnCustomButtonPressed(String buttonName)
+    {
+        EventSystem.dispatchEvent(new InOptionBackButtonPressedEvent());
     }
 
     private void loadImages()

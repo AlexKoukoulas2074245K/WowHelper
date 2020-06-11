@@ -8,7 +8,11 @@ import com.alexk.wowhelper.view.MainApplicationView;
 
 import javax.swing.*;
 
-public class MainApplicationController implements IController, ILoadingProgressUpdateEventListener, IMainOptionSelectedEventListener
+public class MainApplicationController implements
+        IController,
+        ILoadingProgressUpdateEventListener,
+        IMainOptionSelectedEventListener,
+        IInOptionBackButtonPressedEventListener
 {
     private final MainApplicationView mMainApplicationView;
     private final MainApplicationModel mMainApplicationModel;
@@ -27,6 +31,7 @@ public class MainApplicationController implements IController, ILoadingProgressU
 
         EventSystem.subscribeToEvent(LoadingProgressUpdateEvent.class, this);
         EventSystem.subscribeToEvent(MainOptionSelectedEvent.class, this);
+        EventSystem.subscribeToEvent(InOptionBackButtonPressedEvent.class, this);
     }
 
     @Override
@@ -57,5 +62,11 @@ public class MainApplicationController implements IController, ILoadingProgressU
     public void onMainOptionSelectedEvent(MainOptionType mainOptionSelected)
     {
         mMainApplicationModel.setApplicationState(ApplicationState.IN_OPTION);
+    }
+
+    @Override
+    public void onInOptionBackButtonPressedEvent()
+    {
+        mMainApplicationModel.setApplicationState(ApplicationState.MAIN_OPTIONS);
     }
 }

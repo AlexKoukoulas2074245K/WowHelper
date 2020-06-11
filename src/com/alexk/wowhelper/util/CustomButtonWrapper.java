@@ -1,23 +1,26 @@
 package com.alexk.wowhelper.util;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 
 public class CustomButtonWrapper extends JButton implements MouseListener, ActionListener
 {
+    private static final String BUTTON_IDLE_IMAGE_SUFFIX    = "_button.png";
+    private static final String BUTTON_PRESSED_IMAGE_SUFFIX = "_button_pressed.png";
+
     private final String mButtonName;
-    private final Image mIdleButtonImage, mPressedButtonImage;
     private final ICustomButtonPressedListener mButtonPressedListener;
+    private Image mIdleButtonImage, mPressedButtonImage;
     private Image mCurrentImage;
 
     public CustomButtonWrapper(
             final String buttonName,
-            final Image idleButtonImage,
-            final Image pressedButtonImage,
             final ICustomButtonPressedListener buttonPressedListener
     )
     {
@@ -25,9 +28,9 @@ public class CustomButtonWrapper extends JButton implements MouseListener, Actio
 
         mButtonName = buttonName;
 
-        mIdleButtonImage    = idleButtonImage;
-        mPressedButtonImage = pressedButtonImage;
-        mCurrentImage       = mIdleButtonImage;
+        loadImages();
+
+        mCurrentImage = mIdleButtonImage;
 
         mButtonPressedListener = buttonPressedListener;
 
@@ -70,5 +73,19 @@ public class CustomButtonWrapper extends JButton implements MouseListener, Actio
     public void actionPerformed(ActionEvent e)
     {
         mButtonPressedListener.OnCustomButtonPressed(mButtonName);
+    }
+
+
+    private void loadImages()
+    {
+        try
+        {
+            mIdleButtonImage    = ImageIO.read(this.getClass().getResourceAsStream("/" + mButtonName + BUTTON_IDLE_IMAGE_SUFFIX));
+            mPressedButtonImage = ImageIO.read(this.getClass().getResourceAsStream("/" + mButtonName + BUTTON_PRESSED_IMAGE_SUFFIX));
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
